@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* === Custom Styles === */
+html {
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+@layer components {
+  .input {
+    @apply w-full px-4 py-2 rounded border border-pink-400 text-purple-900 dark:text-fuchsia-100 placeholder:text-purple-500 dark:placeholder:text-pink-200 focus:outline-none focus:ring-2 focus:ring-pink-400 dark:focus:ring-pink-500;
+    background-color: #fff;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .input {
+      background-color: #9d174d; /* rose-700 / soft pink in dark mode */
+    }
+  }
+
+  .textarea {
+    @apply w-full px-4 py-2 rounded border border-fuchsia-500 text-purple-900 dark:text-fuchsia-100 placeholder:text-purple-500 dark:placeholder:text-pink-200 focus:outline-none focus:ring-2 focus:ring-fuchsia-400 dark:focus:ring-fuchsia-500 resize-none;
+    background-color: #fff;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .textarea {
+      background-color: #a21caf; /* fuchsia-700 / warm pink tone */
+    }
+  }
+
+  button {
+    @apply transition duration-300 ease-in-out;
+  }
+
+  .heading-glow {
+    @apply bg-clip-text text-transparent font-bold;
+    background-image: linear-gradient(to right, #f472b6, #d946ef, #9333ea);
+  }
+}
