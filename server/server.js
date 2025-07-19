@@ -24,10 +24,21 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ✅ Secure CORS: Only allow your frontend
+// ✅ Flexible CORS setup
+const allowedOrigins = [
+  'https://unheardvoices-project.vercel.app',
+  'https://unheardvoices-project-n9m9pmocm-joseph-muchiris-projects.vercel.app',
+];
+
 app.use(cors({
-  origin: 'https://unheardvoices-project.vercel.app',
-  credentials: true
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
 }));
 
 app.use(helmet());
@@ -55,5 +66,5 @@ app.use(errorHandler);
 // --- Start Server ---
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running in ${process.env.NODE_ENV || 'production'} mode on port ${PORT}`);
+  console.log(`Server running in ${process.env.NODE_ENV || 'production'} mode on port ${PORT}`);
 });
