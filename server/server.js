@@ -24,10 +24,9 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ✅ Flexible CORS setup
 const allowedOrigins = [
   'https://unheardvoices-project.vercel.app',
-  'https://unheardvoices-project-n9m9pmocm-joseph-muchiris-projects.vercel.app',
+  'https://unheardvoices-project-1ziljt3q0-joseph-muchiris-projects.vercel.app',
 ];
 
 app.use(cors({
@@ -38,8 +37,9 @@ app.use(cors({
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true,
+  credentials: true
 }));
+
 
 app.use(helmet());
 
