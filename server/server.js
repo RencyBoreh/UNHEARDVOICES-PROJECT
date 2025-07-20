@@ -24,11 +24,10 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ✅ Smart CORS: allows production & Vercel preview domains
+// ✅ Smart CORS: allows production & all Vercel preview URLs
 app.use(cors({
   origin: function (origin, callback) {
     const allowedPattern = /^https:\/\/unheardvoices-project(-[\w\d]+)?\.vercel\.app$/;
-
     if (!origin || allowedPattern.test(origin)) {
       callback(null, true);
     } else {
@@ -46,7 +45,7 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use(logger);
 
-// Serve static assets (like uploaded images)
+// --- Static File Serving ---
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // --- API Routes ---
@@ -60,7 +59,7 @@ app.use('/api/contact', require('./routes/contactRoutes')); // ✅ Contact route
 app.use(notFound);
 app.use(errorHandler);
 
-// --- Start Server ---
+// --- Server Start ---
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running in ${process.env.NODE_ENV || 'production'} mode on port ${PORT}`);
