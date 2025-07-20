@@ -24,22 +24,19 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const allowedOrigins = [
-  'https://unheardvoices-project.vercel.app',
-  'https://unheardvoices-project-1ziljt3q0-joseph-muchiris-projects.vercel.app',
-];
-
+// ✅ Smart CORS: allows production & Vercel preview domains
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+    const allowedPattern = /^https:\/\/unheardvoices-project(-[\w\d]+)?\.vercel\.app$/;
+
+    if (!origin || allowedPattern.test(origin)) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(new Error(`CORS policy: Origin ${origin} not allowed.`));
     }
   },
   credentials: true
 }));
-
 
 app.use(helmet());
 
@@ -49,7 +46,7 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use(logger);
 
-// Serve static assets (like uploaded files)
+// Serve static assets (like uploaded images)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // --- API Routes ---
@@ -66,5 +63,5 @@ app.use(errorHandler);
 // --- Start Server ---
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
-  console.log(`Server is now running  in ${process.env.NODE_ENV || 'production'} mode on port ${PORT}`);
+  console.log(`🚀 Server running in ${process.env.NODE_ENV || 'production'} mode on port ${PORT}`);
 });
