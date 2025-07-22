@@ -24,60 +24,48 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ✅ Smart CORS: allow production + Vercel preview deployments
+// ✅ CORS: Allow Vercel production + preview builds
 app.use(cors({
   origin: function (origin, callback) {
-    console.log('🔍 Incoming Origin:', origin);
-    const allowedPattern = /^https:\/\/unheardvoices-project(-[\w\d]*)*(-[\w\d]*)*\.vercel\.app$/;
+    const allowedPattern = /^https:\/\/unheardvoices-project(-[\w\d]+)?\.vercel\.app$/;
     if (!origin || allowedPattern.test(origin)) {
       callback(null, true);
     } else {
+      console.warn(`❌ Blocked by CORS: ${origin}`);
       callback(new Error(`CORS policy: Origin ${origin} not allowed.`));
     }
   },
-  credentials: true
+  credentials: true,
 }));
 
-// ✅ Handle CORS Preflight OPTIONS requests
-app.options('*', cors(), (req, res) => {
-  console.log(`⚙️ Preflight request from ${req.headers.origin}`);
-  res.sendStatus(200);
-});
+// ✅ Handle OPTIONS preflight requests
+app.options('*', cors());
 
+// Security
 app.use(helmet());
 
+// Logging (only in development)
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
 app.use(logger);
 
-// --- Static File Serving ---
+// Static assets
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// --- API Routes (with safe guards) ---
-try {
-  const storyRoutes = require('./routes/storyRoutes');
-  const donationRoutes = require('./routes/donationRoutes');
-  const adminRoutes = require('./routes/adminRoutes');
-  const uploadRoutes = require('./routes/uploadRoutes');
-  const contactRoutes = require('./routes/contactRoutes');
-
-  app.use('/api/stories', storyRoutes);
-  app.use('/stories', storyRoutes); // Duplicate endpoint for frontend flexibility
-  app.use('/api/donations', donationRoutes);
-  app.use('/api/admin', adminRoutes);
-  app.use('/api/upload', uploadRoutes);
-  app.use('/api/contact', contactRoutes);
-} catch (err) {
-  console.error('❌ Route registration failed:', err.message);
-}
+// --- API Routes ---
+app.use('/api/stories', require('./routes/storyRoutes'));
+app.use('/api/donations', require('./routes/donationRoutes'));
+app.use('/api/admin', require('./routes/adminRoutes'));
+app.use('/api/upload', require('./routes/uploadRoutes'));
+app.use('/api/contact', require('./routes/contactRoutes'));
 
 // --- Error Handling ---
 app.use(notFound);
 app.use(errorHandler);
 
-// --- Server Start ---
+// Start server
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running in ${process.env.NODE_ENV || 'production'} mode on port ${PORT}`);
