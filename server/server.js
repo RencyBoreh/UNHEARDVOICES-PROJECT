@@ -28,6 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors({
   origin: function (origin, callback) {
     const allowedPattern = /^https:\/\/unheardvoices-project(-[\w\d]+)?\.vercel\.app$/;
+    console.log('🔍 Incoming Origin:', origin); // Optional: log origin for debugging
     if (!origin || allowedPattern.test(origin)) {
       callback(null, true);
     } else {
@@ -49,11 +50,14 @@ app.use(logger);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // --- API Routes ---
-app.use('/api/stories', require('./routes/storyRoutes'));
+const storyRoutes = require('./routes/storyRoutes');
+app.use('/api/stories', storyRoutes);
+app.use('/stories', storyRoutes); // ✅ Added route to support /stories path
+
 app.use('/api/donations', require('./routes/donationRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
 app.use('/api/upload', require('./routes/uploadRoutes'));
-app.use('/api/contact', require('./routes/contactRoutes')); // ✅ Contact route included
+app.use('/api/contact', require('./routes/contactRoutes'));
 
 // --- Error Handling ---
 app.use(notFound);
