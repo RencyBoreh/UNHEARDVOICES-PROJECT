@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors({
   origin: function (origin, callback) {
     console.log('🔍 Incoming Origin:', origin);
-    const allowedPattern = /^https:\/\/unheardvoices-project(-[\w\d]+)*(-[\w\d]+)*\.vercel\.app$/;
+    const allowedPattern = /^https:\/\/unheardvoices-project(-[\w\d]*)*(-[\w\d]*)*\.vercel\.app$/;
     if (!origin || allowedPattern.test(origin)) {
       callback(null, true);
     } else {
@@ -55,20 +55,23 @@ app.use(logger);
 // --- Static File Serving ---
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// --- API Routes ---
-const storyRoutes = require('./routes/storyRoutes');
-const donationRoutes = require('./routes/donationRoutes');
-const adminRoutes = require('./routes/adminRoutes');
-const uploadRoutes = require('./routes/uploadRoutes');
-const contactRoutes = require('./routes/contactRoutes');
+// --- API Routes (with safe guards) ---
+try {
+  const storyRoutes = require('./routes/storyRoutes');
+  const donationRoutes = require('./routes/donationRoutes');
+  const adminRoutes = require('./routes/adminRoutes');
+  const uploadRoutes = require('./routes/uploadRoutes');
+  const contactRoutes = require('./routes/contactRoutes');
 
-// ✅ Register all routes with proper path strings
-app.use('/api/stories', storyRoutes);
-app.use('/stories', storyRoutes);
-app.use('/api/donations', donationRoutes);
-app.use('/api/admin', adminRoutes);
-app.use('/api/upload', uploadRoutes);
-app.use('/api/contact', contactRoutes);
+  app.use('/api/stories', storyRoutes);
+  app.use('/stories', storyRoutes); // Duplicate endpoint for frontend flexibility
+  app.use('/api/donations', donationRoutes);
+  app.use('/api/admin', adminRoutes);
+  app.use('/api/upload', uploadRoutes);
+  app.use('/api/contact', contactRoutes);
+} catch (err) {
+  console.error('❌ Route registration failed:', err.message);
+}
 
 // --- Error Handling ---
 app.use(notFound);
