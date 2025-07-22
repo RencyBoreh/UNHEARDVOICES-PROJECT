@@ -24,11 +24,11 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ✅ Smart CORS: allow prod + Vercel preview deployments
+// ✅ Smart CORS: allow production + Vercel preview deployments
 app.use(cors({
   origin: function (origin, callback) {
     console.log('🔍 Incoming Origin:', origin);
-    const allowedPattern = /^https:\/\/unheardvoices-project(-[\w\d]+)?(-[\w\d]+)?\.vercel\.app$/;
+    const allowedPattern = /^https:\/\/unheardvoices-project(-[\w\d]+)*(-[\w\d]+)*\.vercel\.app$/;
     if (!origin || allowedPattern.test(origin)) {
       callback(null, true);
     } else {
@@ -39,7 +39,10 @@ app.use(cors({
 }));
 
 // ✅ Handle CORS Preflight OPTIONS requests
-app.options('*', cors()); // Handles preflight automatically
+app.options('*', cors(), (req, res) => {
+  console.log(`⚙️ Preflight request from ${req.headers.origin}`);
+  res.sendStatus(200);
+});
 
 app.use(helmet());
 
@@ -54,13 +57,18 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // --- API Routes ---
 const storyRoutes = require('./routes/storyRoutes');
-app.use('/api/stories', storyRoutes);
-app.use('/stories', storyRoutes); // ✅ Enables /stories path directly
+const donationRoutes = require('./routes/donationRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+const uploadRoutes = require('./routes/uploadRoutes');
+const contactRoutes = require('./routes/contactRoutes');
 
-app.use('/api/donations', require('./routes/donationRoutes'));
-app.use('/api/admin', require('./routes/adminRoutes'));
-app.use('/api/upload', require('./routes/uploadRoutes'));
-app.use('/api/contact', require('./routes/contactRoutes'));
+// ✅ Register all routes with proper path strings
+app.use('/api/stories', storyRoutes);
+app.use('/stories', storyRoutes);
+app.use('/api/donations', donationRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/upload', uploadRoutes);
+app.use('/api/contact', contactRoutes);
 
 // --- Error Handling ---
 app.use(notFound);
