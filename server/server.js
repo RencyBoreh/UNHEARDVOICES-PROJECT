@@ -24,11 +24,11 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ✅ Smart CORS: allows production & all Vercel preview URLs
+// ✅ Smart CORS: allow prod + Vercel preview deployments
 app.use(cors({
   origin: function (origin, callback) {
-    const allowedPattern = /^https:\/\/unheardvoices-project(-[\w\d]+)?\.vercel\.app$/;
-    console.log('🔍 Incoming Origin:', origin); // Optional: log origin for debugging
+    console.log('🔍 Incoming Origin:', origin);
+    const allowedPattern = /^https:\/\/unheardvoices-project(-[\w\d]+)?(-[\w\d]+)?\.vercel\.app$/;
     if (!origin || allowedPattern.test(origin)) {
       callback(null, true);
     } else {
@@ -37,6 +37,9 @@ app.use(cors({
   },
   credentials: true
 }));
+
+// ✅ Handle CORS Preflight OPTIONS requests
+app.options('*', cors()); // Handles preflight automatically
 
 app.use(helmet());
 
@@ -52,7 +55,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // --- API Routes ---
 const storyRoutes = require('./routes/storyRoutes');
 app.use('/api/stories', storyRoutes);
-app.use('/stories', storyRoutes); // ✅ Added route to support /stories path
+app.use('/stories', storyRoutes); // ✅ Enables /stories path directly
 
 app.use('/api/donations', require('./routes/donationRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
@@ -66,5 +69,5 @@ app.use(errorHandler);
 // --- Server Start ---
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running at ${process.env.NODE_ENV || 'production'} mode on port ${PORT}`);
+  console.log(`🚀 Server running in ${process.env.NODE_ENV || 'production'} mode on port ${PORT}`);
 });
