@@ -62,10 +62,11 @@ app.use('/api/contact', require('./routes/contactRoutes'));
 app.use(notFound);
 app.use(errorHandler);
 
+// Triggering CI pipeline test
 
 
 // --- Server Start ---
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running in ${process.env.NODE_ENV || 'production'} mode on port ${PORT}`);
+  console.log(`🚀 Server is now running in ${process.env.NODE_ENV || 'production'} mode on port ${PORT}`);
 });
