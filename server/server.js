@@ -18,28 +18,21 @@ connectDB();
 
 // Initialize Express
 const app = express();
+const allowedOrigins = [
+  'https://unheardvoices-project.vercel.app', // your Vercel frontend
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true, // only if you're using cookies or auth headers
+}));
 
 // --- Middleware ---
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 
-const allowedOrigins = [
-  'https://unheardvoices-project.vercel.app',
-  'https://unheardvoices-project-preview.vercel.app', // 👈 example preview domain
-];
 
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      console.warn(`❌ CORS blocked: ${origin}`);
-      callback(new Error(`CORS policy: Origin ${origin} not allowed.`));
-    }
-  },
-  credentials: true,
-}));
 
 // Logging (only in development)
 if (process.env.NODE_ENV === 'development') {
