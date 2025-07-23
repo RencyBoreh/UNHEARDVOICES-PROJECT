@@ -24,7 +24,7 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: allowedOrigins,
-  credentials: true, // only if you're using cookies or auth headers
+  credentials: true,
 }));
 
 // --- Middleware ---
