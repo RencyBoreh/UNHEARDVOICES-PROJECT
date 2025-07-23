@@ -6,7 +6,6 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const path = require('path');
 
-// Utils & Config
 const logger = require('./utils/logger');
 const connectDB = require('./config/db');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
@@ -23,26 +22,24 @@ const app = express();
 // --- Middleware ---
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(helmet());
 
-// ✅ CORS: Allow Vercel production + preview builds
+const allowedOrigins = [
+  'https://unheardvoices-project.vercel.app',
+  'https://unheardvoices-project-preview.vercel.app', // 👈 example preview domain
+];
+
 app.use(cors({
   origin: function (origin, callback) {
-    const allowedPattern = /^https:\/\/unheardvoices-project(-[\w\d]+)?\.vercel\.app$/;
-    if (!origin || allowedPattern.test(origin)) {
+    if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      console.warn(`❌ Blocked by CORS: ${origin}`);
+      console.warn(`❌ CORS blocked: ${origin}`);
       callback(new Error(`CORS policy: Origin ${origin} not allowed.`));
     }
   },
   credentials: true,
 }));
-
-// ✅ Handle OPTIONS preflight requests
-app.options('*', cors());
-
-// Security
-app.use(helmet());
 
 // Logging (only in development)
 if (process.env.NODE_ENV === 'development') {
@@ -51,7 +48,7 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use(logger);
 
-// Static assets
+// Serve static assets
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // --- API Routes ---
@@ -65,7 +62,9 @@ app.use('/api/contact', require('./routes/contactRoutes'));
 app.use(notFound);
 app.use(errorHandler);
 
-// Start server
+
+
+// --- Server Start ---
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running in ${process.env.NODE_ENV || 'production'} mode on port ${PORT}`);
