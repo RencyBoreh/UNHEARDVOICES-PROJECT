@@ -19,34 +19,29 @@ connectDB();
 // Initialize Express
 const app = express();
 
-// 🌐 Allow local and deployed frontend origins
 const allowedOrigins = [
-  'http://localhost:5173',
-  'https://unheardvoices-project.vercel.app',
+  'https://unheardvoices-project.vercel.app', // your Vercel frontend
 ];
 
-// 🔓 CORS middleware for main routes
 app.use(cors({
   origin: allowedOrigins,
   credentials: true,
 }));
 
-// 🛡️ Handle preflight OPTIONS requests globally
-app.options('*', cors());
 
-// --- Core Middleware ---
+// --- Middleware ---
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 
-// 📝 Logging (only in development)
+// Logging (only in development)
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
 app.use(logger);
 
-// 📁 Serve static assets
+// Serve static assets
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // --- API Routes ---
@@ -60,7 +55,10 @@ app.use('/api/contact', require('./routes/contactRoutes'));
 app.use(notFound);
 app.use(errorHandler);
 
-// 🚀 Start the Server
+// Triggering CI pipeline test
+// Triggering test run after package.json update
+
+// --- Server Start ---
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log(`🚀 Server is now running in ${process.env.NODE_ENV || 'production'} mode on port ${PORT}`);
