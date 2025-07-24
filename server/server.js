@@ -26,6 +26,7 @@ const allowedOrigins = [
 app.use(cors({
   origin: allowedOrigins,
   credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 
@@ -61,5 +62,5 @@ app.use(errorHandler);
 // --- Server Start ---
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server is now running in ${process.env.NODE_ENV || 'production'} mode on port ${PORT}`);
+  console.log(`🚀 Server is  running in ${process.env.NODE_ENV || 'production'} mode on port ${PORT}`);
 });
