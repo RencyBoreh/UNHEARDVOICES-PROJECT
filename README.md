@@ -34,7 +34,7 @@ An empowering full-stack platform that highlights the untold stories of children
 ![Admin Dashboard](./assets/admin-dashboard.png)
 
 ### 💝 Donate Page
-![Donate Page](./assets/donate-page.png)
+![Donate Page](https://github.com/RencyBoreh/UNHEARDVOICES-PROJECT/blob/403331b559e82856232a69926c19917617c34000/donatepage.JPG)
 
 
 ---
