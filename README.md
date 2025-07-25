@@ -5,6 +5,12 @@ An empowering full-stack platform that highlights the untold stories of children
 
 🔗 [Unheard Voices — Deployed on Vercel](https://unheardvoices-project.vercel.app)
 
+## 🔗 Live Project Links
+
+- 🎨 Frontend: [https://unheardvoices-project.vercel.app](https://unheardvoices-project.vercel.app)  
+- ⚙️ Backend API: [https://unheardvoices-project.onrender.com/api](https://unheardvoices-project.onrender.com/api)
+
+
 ## 👥 Team & Roles
 
 - **Backend Developer**: [Rency Boreh](https://github.com/RencyBoreh) — built the REST API, managed database schemas, and implemented authentication, donations, and CORS protection.
