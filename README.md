@@ -44,6 +44,15 @@ An empowering full-stack platform that highlights the untold stories of children
 
 
 ---
+## ⚙️ CI/CD Pipeline
+
+We implemented a CI/CD pipeline to streamline development and deployment:
+- **GitHub Actions** for continuous integration and automated testing.
+- **Vercel** for seamless frontend deployment.
+- **Render** for backend auto-deploy on push.
+
+This ensured fast iteration, early bug detection, and smooth releases.
+
 
 ## 🧱 Tech Stack
 
