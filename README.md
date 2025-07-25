@@ -14,7 +14,7 @@ An empowering full-stack platform that highlights the untold stories of children
 ## 👥 Team & Roles
 
 - **Backend Developer**: [Rency Boreh](https://github.com/RencyBoreh) — built the REST API, managed database schemas, and implemented authentication, donations, and CORS protection.
-- **Frontend Developer**: [Joseph Muchiri](https://github.com/JosephMuchiri) — designed the UI with React, integrated Axios calls, and built the story browser, submission forms, and donation interface.
+- **Frontend Developer**: [Joe Muchiri](https://github.com/JoeMuchiri25) — designed the UI with React, integrated Axios calls, and built the story browser, submission forms, and donation interface.
 
 ## ✨ Features
 
