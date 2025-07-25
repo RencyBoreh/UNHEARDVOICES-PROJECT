@@ -28,7 +28,7 @@ An empowering full-stack platform that highlights the untold stories of children
 ![Homepage](https://github.com/RencyBoreh/UNHEARDVOICES-PROJECT/blob/99e3ccb85703df8fd3c4fcedf45d3c16c4359328/homepage.JPG)
 
 ### 📝 Submit Story
-![Submit Story](./assets/submit-story.png)
+![Submit Story](https://github.com/RencyBoreh/UNHEARDVOICES-PROJECT/blob/8e036d30e3d7a3958b79586847571552bd7e2210/submit%20story.JPG)
 
 ### 🛠️ Admin Dashboard
 ![Admin Dashboard](./assets/admin-dashboard.png)
