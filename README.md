@@ -24,12 +24,18 @@ An empowering full-stack platform that highlights the untold stories of children
 
 ## 🖼️ Screenshots
 
+### 🏠 Homepage
+![Homepage](./assets/homepage.png)
 
-| Homepage | Story Detail | Submit Story |
-|----------|--------------|--------------|
-| ![Homepage Screenshot](assets/home.png) |
-![Story Screenshot](assets/story.png) | 
-![Form Screenshot](assets/form.png) |
+### 📝 Submit Story
+![Submit Story](./assets/submit-story.png)
+
+### 🛠️ Admin Dashboard
+![Admin Dashboard](./assets/admin-dashboard.png)
+
+### 💝 Donate Page
+![Donate Page](./assets/donate-page.png)
+
 
 ---
 
